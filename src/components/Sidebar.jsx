@@ -10,7 +10,7 @@ const navItems = [
   { label: 'Help & Support',    path: null,                 id: 'help-support' },
 ]
 
-export default function Sidebar() {
+export default function Sidebar({ isOpen, closeSidebar }) {
   const navigate  = useNavigate()
   const location  = useLocation()
 
@@ -21,25 +21,31 @@ export default function Sidebar() {
   }
 
   const handleClick = (item) => {
-    if (item.path) navigate(item.path)
+    if (item.path) {
+      navigate(item.path)
+      if (closeSidebar) closeSidebar()
+    }
   }
 
   return (
-    <aside className="sidebar">
-      {navItems.map((item) => (
-        <div
-          key={item.id}
-          className={`sidebar-section${isActive(item) ? ' active' : ''}`}
-          onClick={() => handleClick(item)}
-        >
-          <div className="section-header">
-            <span className="icon"></span>
-            <h3>{item.label}</h3>
-            {item.badge && <span className="badge">{item.badge}</span>}
+    <>
+      <div className={`sidebar-overlay ${isOpen ? 'show' : ''}`} onClick={closeSidebar}></div>
+      <aside className={`sidebar ${isOpen ? 'open' : ''}`}>
+        {navItems.map((item) => (
+          <div
+            key={item.id}
+            className={`sidebar-section${isActive(item) ? ' active' : ''}`}
+            onClick={() => handleClick(item)}
+          >
+            <div className="section-header">
+              <span className="icon"></span>
+              <h3>{item.label}</h3>
+              {item.badge && <span className="badge">{item.badge}</span>}
+            </div>
+            <div className="section-content"></div>
           </div>
-          <div className="section-content"></div>
-        </div>
-      ))}
-    </aside>
+        ))}
+      </aside>
+    </>
   )
 }

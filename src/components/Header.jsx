@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 
-export default function Header({ showUser = true }) {
+export default function Header({ showUser = true, onToggleSidebar }) {
   const navigate = useNavigate()
 
   return (
@@ -24,6 +24,11 @@ export default function Header({ showUser = true }) {
       </div>
       <div className="blue-bar">
         <h2>Hostel Allotment Portal 2026</h2>
+        {showUser && (
+          <button className="hamburger-btn" onClick={onToggleSidebar}>
+            ☰
+          </button>
+        )}
       </div>
     </>
   )
